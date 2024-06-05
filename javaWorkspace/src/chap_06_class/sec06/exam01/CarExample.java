@@ -13,5 +13,6 @@ public class CarExample {
         System.out.println("안녕");
         mycar.speed = 30;
         System.out.println("hello");
+
     }
 }
