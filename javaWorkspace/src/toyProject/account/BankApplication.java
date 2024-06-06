@@ -22,7 +22,7 @@ public class BankApplication {
             }else if (selecNum == 3){
                 deposit();
             }else if(selecNum == 4){
-                withDraw()
+                withDraw();
             }else if(selecNum == 5){
                 run = false;
             }else{
@@ -44,9 +44,81 @@ public class BankApplication {
         String name = sc.nextLine();
         System.out.print("초기입금액: ");
         int balance = Integer.parseInt(sc.nextLine());
-        System.out.println("결과: 계좌가 생성되었습니다.");
         Account newAccount = new Account(ano,name,balance);
-        //97페이지
+        for(int i=0;i<accountArr.length;i++){
+            if(accountArr[i] == null){
+                accountArr[i] = newAccount;
+                System.out.println("결과: 계좌가 생성되었습니다.");
+                break;
+            }
+        }
     }
 
+    // 계좌 목록보기
+    private static void accountList(){
+        System.out.println("------------");
+        System.out.println("계좌목록");
+        System.out.println("------------");
+        for(int i=0;i<accountArr.length;i++){
+            Account account = accountArr[i];
+            if(account != null){
+                System.out.print(account.getAccountNumber());
+                System.out.print("        ");
+                System.out.print(account.getName());
+                System.out.print("        ");
+                System.out.println(account.getBalance());
+            }
+        }
+    }
+
+    //예금하기
+    private static void deposit(){
+        System.out.println("------------");
+        System.out.println("예금");
+        System.out.println("------------");
+        System.out.println("계좌번호");
+        String accountNumber =sc.nextLine();
+        System.out.println("예금액");
+        int depositMoney = Integer.parseInt(sc.nextLine());
+        Account account = findAccount(accountNumber);
+        if(account == null){
+            System.out.println("결과: 계좌가 없습니다.");
+            return;
+        }
+        account.setBalance(account.getBalance() + depositMoney);
+        System.out.println("결과: 예금이 성공되었습니다.");
+    }
+
+    //출금
+    private static void withDraw(){
+        System.out.println("------------");
+        System.out.println("출금");
+        System.out.println("------------");
+        System.out.println("계좌번호: ");
+        String accountNumber = sc.nextLine();
+        System.out.println("출금액: ");
+        int withDrawMoney = Integer.parseInt(sc.nextLine());
+        Account account = findAccount(accountNumber);
+        if(account == null){
+            System.out.println("결과: 계좌가 없습니다.");
+            return;
+        }
+        account.setBalance(account.getBalance()-withDrawMoney);
+        System.out.println("결과: 출금이 성공되었습니다.");
+    }
+
+    //Account 배열에서 accountNumber와 동일한 Account 객체 찾기
+    private static Account findAccount(String accountNumber){
+        Account account = null;
+        for(int i=0;i<accountArr.length;i++){
+            if(accountArr[i] != null){
+                String dbAccountNumber = accountArr[i].getAccountNumber();
+                if(dbAccountNumber.equals(accountNumber)){
+                    account = accountArr[i];
+                    break;
+                }
+            }
+        }
+        return account;
+    }
 }
